@@ -11,4 +11,25 @@ public class UserValidation {
         }
         return "Invalid";
     }
+    public static String validateEmail(String email) {
+        String emailPattern = "^[a-zA-Z0-9]{3,}([+-._]{1}[a-zA-Z0-9]+)?[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,3}([.]{1}[a-zA-Z]{2,3})?$";
+        if (email.matches(emailPattern)) {
+            return "Valid";
+        }
+        return "Invalid";
+    }
+    public static String validateMobileNumber(String mobilenumber) {
+        String mobileNumberPattern = "^[1-9]{1,3}[ ][0-9]{10}$";
+        if (mobilenumber.matches(mobileNumberPattern)) {
+            return "Valid";
+        }
+        return "Invalid";
+    }
+    public static String validateEightCharacterPassword(String password) {
+        String passwordRuleOnePattern = "^[a-zA-Z]{8,}";
+        if (password.matches(passwordRuleOnePattern)) {
+            return "Valid";
+        }
+        return "Invalid";
+    }
 }
