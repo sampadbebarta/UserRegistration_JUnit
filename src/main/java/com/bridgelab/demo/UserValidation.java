@@ -11,4 +11,11 @@ public class UserValidation {
         }
         return "Invalid";
     }
+    public static String validateEmail(String email) {
+        String emailPattern = "^[a-zA-Z0-9]{3,}([+-._]{1}[a-zA-Z0-9]+)?[@]{1}[a-zA-Z0-9]+[.]{1}[a-z]{2,3}([.]{1}[a-zA-Z]{2,3})?$";
+        if (email.matches(emailPattern)) {
+            return "Valid";
+        }
+        return "Invalid";
+    }
 }
