@@ -28,4 +28,16 @@ public class UserRegistrationTest {
         String result=userValidation.validateFirstAndLastName("rahul");
         Assert.assertEquals("Invalid",result);
     }
+    @Test
+    public void givenEmail_WhenProper_ShouldReturnValid() {
+        UserValidation userValidation = new UserValidation();
+        String result=userValidation.validateEmail("abc@yahoo.com");
+        Assert.assertEquals("Valid",result);
+    }
+    @Test
+    public void givenEmail_WhenInproper_ShouldReturnInvalid() {
+        UserValidation userValidation = new UserValidation();
+        String result=userValidation.validateEmail("abc@%*.com");
+        Assert.assertEquals("Invalid",result);
+    }
 }
