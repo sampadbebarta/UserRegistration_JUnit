@@ -1,73 +1,86 @@
 package com.bridgelab.demo;
 
+import java.util.regex.Pattern;
+@FunctionalInterface
+interface IUserValidation {
+
+    boolean validateUser(String userInput,String pattern);
+}
 public class UserValidation {
+    private static Pattern FIRST_NAME_PATTERN = Pattern.compile("^[A-Z][a-z]{2,}$");
+    private static Pattern LAST_NAME_PATTERN = Pattern.compile("^[A-Z][a-z]{2,}$");
+    private static Pattern EMAIL = Pattern.compile("^[\\w-_\\.?+]{2,}[\\w]\\@([\\w]+\\.)+[\\w]+[\\w]$");
+    private static Pattern PHONE_NUMBER =Pattern.compile("^[1-9]{2}[-][6-9][0-9]{9}$");
+    private static Pattern PASSWORD_FIRST_RULE =Pattern.compile("^[a-zA-Z0-9]{8,}");
+    private static Pattern PASSWORD_SECOND_RULE = Pattern.compile("^[A-Z]{1,}[a-zA-Z0-9]{7,}");
+    private static Pattern PASSWORD_THIRD_RULE = Pattern.compile("^[0-9]{1,}[a-zA-Z0-9]{7,}");
+    private static Pattern PASSWORD_FOURTH_RULE = Pattern.compile("^[A-Z0-9a-z.%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}");
 
-	public void PrintWelcomeMessage() {
-		System.out.println("Welcome to the User Validation Problem");
-	}
+    boolean isValid = false;
+    static boolean isValidEmail=false;
+    public boolean validateUserFirstName(String firstName) throws MyException {
+        isValid=FIRST_NAME_PATTERN.matcher(firstName).matches();
+        if(!isValid){
+            throw new MyException("FirstNameShouldStartsWithCapsLetter");
+        }
 
-	public void IsEmptyorNullString(String input) throws UserValidationException {
-		try {
-			if (input.length() == 0) {
-				throw new UserValidationException( UserValidationException.ExceptionType.GIVEN_EMPTY, " Empty Input Not Allowed Please Enter Again");
-			}
-		}
-		catch(NullPointerException e)
-		{
-			throw new UserValidationException( UserValidationException.ExceptionType.GIVEN_NULL, "Null Not Allowed Please Enter Again ");
+        return isValid;
+    }
 
-		}
-	}
+    public boolean validateUserLastName(String lastName) throws MyException {
+        isValid=LAST_NAME_PATTERN.matcher(lastName).matches();
+        if(!isValid){
+            throw new MyException("LastNameShouldStartsWithCapsLetter");
+        }
+        return isValid;
+    }
 
-	public boolean ValidateFirstName(String firstName) throws UserValidationException {
-		IsEmptyorNullString(firstName);
-		boolean  matcher = firstName.matches("([A-Z][a-z]{2,})");
-		if(matcher == true) {
-			return matcher;
-		}
-		return matcher;
-	}
+    public static boolean validateEmail(String email)throws MyException {
+        isValidEmail = EMAIL.matcher(email).matches();
+        if(!isValidEmail){
+            throw new MyException("EmailFormatBeProper");
+        }
+        return isValidEmail;
 
-	public boolean ValidateLastName(String lastName) throws UserValidationException {
-		IsEmptyorNullString(lastName);
-		boolean matcher = lastName.matches("([A-Z][a-z]{2,})");
-		if(matcher == true) {
-			return matcher;
-		}
-		return matcher;
+    }
+    public boolean validateUserMobileNumber(String mobileNumber)throws MyException {
+        isValid=PHONE_NUMBER.matcher(mobileNumber).matches();
+        if (!isValid){
+            throw new MyException("giveProperPhoneNumber");
+        }
+        return isValid;
+    }
+    public boolean validatePasswordFirstRule(String password)throws MyException{
+        isValid=PASSWORD_FIRST_RULE.matcher(password).matches();
+        if (!isValid){
+            throw new MyException("PasswordShouldBeMinimumEightCharacter");
+        }
+        return isValid;
+    }
+    public boolean validatePasswordSecondRuleAtleastOneUpperCase(String password)throws MyException {
+        isValid=PASSWORD_SECOND_RULE.matcher(password).matches();
+        if (!isValid){
+            throw new MyException("PasswordAtLeastContainOneUpperCaseLetter");
+        }
+        return isValid;
+    }
+    public boolean validatePasswordThirdRuleAtleastOneNumericNumber(String password)throws MyException{
+        isValid=PASSWORD_THIRD_RULE.matcher(password).matches();
+        if (!isValid){
+            throw new MyException("PasswordAtLeastContainNumericLetter");
+        }
+        return isValid;
+    }
+    public boolean validatePasswordFourthRuleExactlyOneSpecialCharacter(String password)throws MyException{
+        isValid=PASSWORD_FOURTH_RULE.matcher(password).matches();
+        if (!isValid){
+            throw new MyException("PasswordAtLeastContainSpecialCharacter");
+        }
+        return isValid;
+    }
+    public boolean validation(String name,String Pattern){
+        IUserRegistration iUserRegistration = ((userInput, pattern) -> userInput.matches(pattern));
+        return iUserRegistration.validateUser(name,Pattern);
+    }
 
-	}
-
-	public boolean ValidateEmail(String email) throws UserValidationException {
-		IsEmptyorNullString(email);
-		boolean matcher = email.matches( "^[a-zA-Z]+([._+-]{0,1}[a-zA-Z0-9]+)*@[a-zA-Z0-9]+.[a-zA-Z]{2,4}+(?:\\.[a-z]{2,}){0,1}$");
-		if(matcher == true) {
-			return matcher;
-		}
-		else
-			return matcher;
-	}
-
-	public boolean ValidatePhoneNumber(String phoneNumber) throws UserValidationException {
-		IsEmptyorNullString(phoneNumber);
-		boolean matcher = phoneNumber.matches("(([0-9]{2})?)[ ][0-9]{10}");
-		if(matcher) {
-			System.out.println("Valid Mobile Number");
-			return matcher;
-		}
-		return false;
-
-	}
-
-	public boolean ValidatePassword(String password) throws UserValidationException {
-		IsEmptyorNullString(password);
-		boolean matcher = password.matches("(^(?=.*[A-Z]))(?=.*[0-9])(?=.*[a-z])(?=.*[@*&^%#-*+!]{1}).{8,}$");
-
-		if(matcher) {
-			System.out.println("Valid Password");
-			return matcher;
-		}
-		return false;
-
-	}
 }
